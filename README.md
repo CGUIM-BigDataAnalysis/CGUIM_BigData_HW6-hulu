@@ -1,28 +1,27 @@
-勵志書暢銷的背後，吸引讀者的內容(詞彙)為何？
+勵志書暢銷的背後，吸引讀者的詞彙為何？
 ================
 
-胡茹芳
-======
+### 胡茹芳
 
 分析議題背景
 ------------
 
-背景介紹 在這出版業人人喊苦,書店一間接著一間熄燈 為何勵志書籍能和工具書並駕齊驅甚至高居排行榜不下 (註:)
+在這出版業人人喊苦,書店一間接著一間熄燈 勵志書籍能和工具書並駕齊驅甚至高居排行榜不下 Peter Su 是近年暢銷書的作家,在百花齊放的社群上有著高人氣 出版的著作有著驚人的銷量 在這出版業哀聲載道,一刷2000本能賣完是萬幸的寒冬 還能賣出十萬本的書籍究竟是深藏著何種功夫 在暢銷的背後，讀者追尋的是什麼？
 
 分析動機
 --------
 
-<http://www.openbook.org.tw/article/20170225-249> 看到這篇文章覺得很有意思,也想到今年於台北國際書展 勵志書籍的數量相當驚人,也放在各出版社的醒目位置 走過去總會忍不住拿起來翻個幾頁或是將封面書腰上的文字快速閱讀過 網路上對於此類的書籍評價正反兩極 (正方認為能夠帶來舒緩;反方持無病呻吟的看法) Peter Su 是近年暢銷書的作家,能在百花齊放的社群上有著高人氣 他是先由FB貼文引起關注而逐漸擁有許多粉絲,才得以出書 能夠在短短一個月55刷衝破10本的銷量 不論內容是什麼,總是讓我很好奇
+<http://www.openbook.org.tw/article/20170225-249> 看到這篇文章覺得很有意思,也想到今年於台北國際書展 勵志書籍的數量相當驚人,也放在各出版社的醒目位置 走過去總會忍不住拿起來翻個幾頁或是將封面書腰上的文字快速閱讀過 網路上對於此類的書籍評價正反兩極 (正方認為能夠帶來舒緩;反方持無病呻吟的看法) Peter Su 是先由FB貼文引起關注而逐漸擁有許多粉絲,才得以出書 能夠在短短一個月55刷衝破10本的銷量 不論內容是什麼,總是讓我很好奇
 
 使用資料
 --------
 
-打算抓暢銷作家PeterSu在FB的貼文 時間是2016上半年 在這出版業哀聲載道,一刷2000本能賣完是萬幸的寒冬 還能賣出十萬本的書籍究竟是深藏著何種功夫 在暢銷的背後，讀者追尋的是什麼？
+打算抓暢銷作家PeterSu在FB的貼文 時間是2017四月至今
 
 載入使用資料們
 
 ``` r
-token<- "EAACEdEose0cBAA691U0qbiV6alSjWcro4KfEuZB92ZC8OoZCoeHciZAIlglZCKOojoNQIpF5ZBqRtwlo0ViYm7ysJcO8T9HJXlbU8iVf707z7W22ibhppwzwJ3ZAe94EdGBioQujWmdGZBXJ4aWQYnKxLFtXQw0mrirh2Di0csNdNKdVmXXrE1goZALCa4oMbepMZD" #access token 
+token<- "EAACEdEose0cBAPLJYblqnv7O5Qyr1tAAaYLH7pZCyqZB8LZCsIuOYqI9Y94G3f3a3L1h4DRliaOpz22KZByUhNZCyvnSQXIXgY3tq6AFaHGoWio9dcZA8hMqNsLhdvVobDDVcKuRnhiEeilXzB3we9XKvEHJ3ibYt56xvJfxAsNpZByqHUzV7gpJV6gqw95RPsZD" #access token 
 #install.packages("Rfacebook")  #初次使用須先安裝
 library(Rfacebook) 
 ```
@@ -163,14 +162,14 @@ str(totalPage)
     ##  $ created_time  : chr  "2017-04-02T14:07:09+0000" "2017-04-04T13:49:32+0000" "2017-04-05T13:55:45+0000" "2017-04-07T13:50:16+0000" ...
     ##  $ type          : chr  "photo" "photo" "photo" "photo" ...
     ##  $ story         : chr  NA NA NA NA ...
-    ##  $ likes_count   : num  11520 15632 8674 9816 8150 ...
+    ##  $ likes_count   : num  11521 15633 8675 9817 8151 ...
     ##  $ comments_count: num  93 113 70 48 44 40 36 29 13 31 ...
     ##  $ shares_count  : num  535 598 394 575 212 266 350 4 145 40 ...
 
 探索式資料分析
 --------------
 
-圖文並茂圖文並茂
+透過結巴來進行中文斷詞,看什麼詞彙是作者頻繁使用 來得知內容多半會涉及哪方面 利用group\_by 來分析發文附上影片,圖片,連結之間是否會有差距懸殊的互動 (在此假設互動就是有在貼文進行留言,按讚,或分享)
 
 ``` r
 #install.packages("jiebaR")
@@ -738,25 +737,25 @@ cutter[totalPage$message]
 mean(totalPage$likes_count)  #平均每篇貼文的讚數
 ```
 
-    ## [1] 7976.614
+    ## [1] 7980.932
 
 ``` r
 mean(totalPage$comments_count) #下方留言平均數
 ```
 
-    ## [1] 56.75
+    ## [1] 56.77273
 
 ``` r
 mean(totalPage$shares_count) # 分享次篇貼文的次數
 ```
 
-    ## [1] 394.6591
+    ## [1] 394.9318
 
 ``` r
 range(totalPage$shares_count)
 ```
 
-    ## [1]    0 1303
+    ## [1]    0 1306
 
 ``` r
 #sort(table(cutter[totalPage$message]),decreasing = T)
@@ -778,25 +777,73 @@ library(dplyr)
 
 ``` r
 totalpage_test <- totalPage
-totalpage_test %>% group_by(type) %>%
-                  summarize(num_likes = mean(likes_count),
-                            num_comment = mean(comments_count),
-                            num_share  = mean(shares_count)) %>%
+totalpage_test %>% 
+  group_by(type) %>%   
+          summarize(num_likes = mean(likes_count),
+                    num_comment = mean(comments_count),
+                    num_share  = mean(shares_count)) %>%
                   arrange(desc(num_likes))
 ```
 
     ## # A tibble: 3 × 4
     ##    type num_likes num_comment num_share
     ##   <chr>     <dbl>       <dbl>     <dbl>
-    ## 1  link  8623.500    58.33333  698.5000
-    ## 2 photo  8319.235    60.67647  383.4412
-    ## 3 video  4094.000    21.00000   34.2500
+    ## 1  link  8632.833    58.33333  699.5000
+    ## 2 photo  8322.706    60.70588  383.6176
+    ## 3 video  4098.000    21.00000   34.2500
+
+``` r
+#install.packages("wordcloud")  安裝wordcloud 套件
+library(wordcloud)
+```
+
+    ## Warning: package 'wordcloud' was built under R version 3.3.3
+
+    ## Loading required package: RColorBrewer
+
+``` r
+#install.packages("RColorBrewer") # color palettes
+library(RColorBrewer)
+#install.packages("tm") 
+library(tm)
+```
+
+    ## Warning: package 'tm' was built under R version 3.3.3
+
+    ## Loading required package: NLP
+
+    ## 
+    ## Attaching package: 'NLP'
+
+    ## The following object is masked from 'package:httr':
+    ## 
+    ##     content
+
+``` r
+#install.packages("ggplot2")
+library(ggplot2)
+```
+
+    ## Warning: package 'ggplot2' was built under R version 3.3.3
+
+    ## 
+    ## Attaching package: 'ggplot2'
+
+    ## The following object is masked from 'package:NLP':
+    ## 
+    ##     annotate
+
+``` r
+ggplot(totalpage_test,aes(x=type,y=likes_count))+geom_boxplot()+theme_bw()
+```
+
+![](README_files/figure-markdown_github/unnamed-chunk-3-1.png)
 
 期末專題分析規劃
 ----------------
 
-期末打算分析PeterSu 去年的FB貼文 (他目前為天下雜誌駐站作家．Brand名牌誌專欄作家．Cheers駐站作家) 再利用wordcloud去產生讓人一目瞭然的文字雲 並統計其貼文被轉貼的數量 一個月內書可以再刷到55刷 在這紙本書產業蕭條的時代 什麼內容能如同一道佳餚抓住讀者的胃口 並藉由發文時間了解是否作者有自己的一個固定與臉友的互動時光
+期末打算分析PeterSu 去年的FB貼文 (他目前為天下雜誌駐站作家．Brand名牌誌專欄作家．Cheers駐站作家) 再利用wordcloud去產生讓人一目瞭然的文字雲 <https://www.r-bloggers.com/text-mining-and-word-cloud-fundamentals-in-r-5-simple-steps-you-should-know/> <http://rstudio-pubs-static.s3.amazonaws.com/12422_b2b48bb2da7942acaca5ace45bd8c60c.html> 藉由上面兩篇文章,想試著練習Wordcloud 並統計其貼文被轉貼的數量 一個月內書可以再刷到55刷 在這紙本書產業蕭條的時代 什麼內容能如同一道佳餚抓住讀者的胃口 並藉由發文時間了解是否作者有自己的一個固定與臉友的互動時光 將新增自訂詞彙 自訂停止詞 讓分析可以更精準
 
-你是否在書店書展中看到滿滿的勵志書籍在大平台上而目光被拉走 在資訊量爆炸,容易使人焦躁不安的世代 網路上出現了許多勵志短文
+前情提要:你是否在書店書展中看到滿滿的勵志書籍在大平台上而目光被拉走 在資訊量爆炸,容易使人焦躁不安的世代 網路上出現了許多勵志短文
 
 期末專題要做XXOOO交叉分析
