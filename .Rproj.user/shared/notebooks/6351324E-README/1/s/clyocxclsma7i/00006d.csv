@@ -1,0 +1,11 @@
+"0","wordcloud(words = d$word, freq = d$freq.Freq ,  min.freq = 1,
+          max.words=100, random.order=FALSE, rot.per=0.35, 
+          colors=brewer.pal(8, ""Dark2""))
+"
+"2","Warning message:
+"
+"2","In strsplit(code, ""\n"", fixed = TRUE) :"
+"2","
+ "
+"2"," input string 1 is invalid in this locale
+"

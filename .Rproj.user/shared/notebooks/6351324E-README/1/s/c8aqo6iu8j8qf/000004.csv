@@ -1,0 +1,2 @@
+"0","write.table(test,file=""test.txt"",row.names = F,col.names = T,eol = ""\r\n"")"
+"0","text <- readLines(""D:/DocumentsAndSettings/Documents/GitHub/CGUIM_BigData_HW6-hulu/test.txt"")"

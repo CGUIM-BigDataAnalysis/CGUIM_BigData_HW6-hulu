@@ -31,11 +31,11 @@ Peter Su 是先由FB貼文引起關注而逐漸擁有許多粉絲,才得以出�
 
 載入使用資料們
 ```{r}
-token<- "EAACEdEose0cBAPLJYblqnv7O5Qyr1tAAaYLH7pZCyqZB8LZCsIuOYqI9Y94G3f3a3L1h4DRliaOpz22KZByUhNZCyvnSQXIXgY3tq6AFaHGoWio9dcZA8hMqNsLhdvVobDDVcKuRnhiEeilXzB3we9XKvEHJ3ibYt56xvJfxAsNpZByqHUzV7gpJV6gqw95RPsZD" #access token 
+token<- "EAACEdEose0cBAAYhUTEc6Sh1IbikTb4JrhI2PL124f7ZAZCLhfvHUXFsXnQBUUkEflkxAfiK0uL7ZBZAsKWTvPqf1a6rO7aZAoZBMRahdLvcSmDj34cT3y4ZA2KZBFyelqvkN3OuubCcQNCbXntDolBGVMx0HDwImKzLWp1YMKJrAsMrrgNh0MlBksLs2LSL5UkZD" #access token 
 #install.packages("Rfacebook")  #初次使用須先安裝
 library(Rfacebook) 
 lastDate<-Sys.Date()
-DateVector<-seq(as.Date("2017-04-01"),lastDate,by="1 days")  #目前以4月至今的貼文來做初步的分析
+DateVector<-seq(as.Date("2017-05-01"),lastDate,by="1 days")  #目前以5月至今的貼文來做初步的分析
 DateVectorStr<-as.character(DateVector)
 totalPage<-NULL
 for(i in 1:(length(DateVectorStr)-1)){
@@ -44,7 +44,7 @@ for(i in 1:(length(DateVectorStr)-1)){
                 until = DateVectorStr[i+1])
     totalPage<-rbind(totalPage,tempPage)
 }
-nrow(totalPage) #得知有幾筆資料
+ nrow(totalPage) #得知有幾筆資料
 ```
 
 ## 資料處理與清洗
@@ -56,7 +56,9 @@ totalPage$id <- NULL
 totalPage$from_id <- NULL
 totalPage$from_name <- NULL
 totalPage$link <- NULL
+totalPage$time <- substr(totalPage$created_time, start=12, stop=13) #抓出發文時間
 str(totalPage)
+test <- data.frame(totalPage$message)
 ```
 
 ## 探索式資料分析
@@ -66,18 +68,83 @@ str(totalPage)
 (在此假設互動就是有在貼文進行留言,按讚,或分享)
 
 ```{r}
-
 #install.packages("jiebaR")
 library(jiebaR)
 cutter <- worker()
-cutter$bylines<- TRUE ## 分行輸出
-cutter[totalPage$message] 
+new_user_word(cutter,'並不是',"n")
+new_user_word(cutter,'有一天',"n")
+new_user_word(cutter,'點個頭',"v")
+new_user_word(cutter,'不一定',"n")
+new_user_word(cutter,'那一年',"n")
+new_user_word(cutter,'花了',"v")
+new_user_word(cutter,'不喜歡',"v")
+new_user_word(cutter,'一開始',"n")
+readLines("stop.txt")
+cutter = worker(stop_word ="stop.txt")
+cutter[totalPage$message]
+
+#install.packages("ggplot2")
+library(ggplot2)
+ggplot(totalpage_test,aes(x=type,y=likes_count))+geom_boxplot()+theme_bw() 
+dotchart(as.numeric(totalPage$time))
+```
+
+```{r}
+write.table(test,file="test.txt",row.names = F,col.names = T,eol = "\r\n")
+text <- readLines("D:/DocumentsAndSettings/Documents/GitHub/CGUIM_BigData_HW6-hulu/test.txt")
+
+
+```
+
+
+
+```{r}
+#install.packages("wordcloud")  安裝wordcloud 套件
+#install.packages("tm") 
+#install.packages("RColorBrewer") # color palettes
+#install.packages("SnowballC")
+library(wordcloud)
+library(SnowballC)
+library(RColorBrewer)
+library(tm)
+library(tmcn)
+library(reshape2)
+library(jiebaR)
+cutter2 <- worker()
+new_user_word(cutter2,'並不是',"n")
+new_user_word(cutter2,'有一天',"n")
+new_user_word(cutter2,'點個頭',"v")
+new_user_word(cutter2,'不一定',"n")
+new_user_word(cutter2,'那一年',"n")
+new_user_word(cutter2,'花了',"v")
+new_user_word(cutter2,'不喜歡',"v")
+new_user_word(cutter2,'一開始',"n")
+readLines("stop.txt")
+cutter2 = worker(stop_word ="stop.txt")
+cutter2[text]
+
+
+dtm <- TermDocumentMatrix(docs)
+m <- as.matrix(dtm)
+
+
+v <- sort(table(cutter2[text]),decreasing=TRUE)
+d <- data.frame(word = names(v),freq=v)
+head(d, 10)
+set.seed(1234)
+wordcloud(words = d$word, freq = d$freq.Freq ,  min.freq = 1,
+          max.words=100, random.order=FALSE, rot.per=0.35, 
+          colors=brewer.pal(8, "Dark2"))
+```
+
+```{r}
 mean(totalPage$likes_count)  #平均每篇貼文的讚數
 mean(totalPage$comments_count) #下方留言平均數
 mean(totalPage$shares_count) # 分享次篇貼文的次數
 range(totalPage$shares_count)
-#sort(table(cutter[totalPage$message]),decreasing = T)
+
 library(dplyr)
+totalpage_test <- NULL
 totalpage_test <- totalPage
 totalpage_test %>% 
   group_by(type) %>%   
@@ -85,18 +152,8 @@ totalpage_test %>%
                     num_comment = mean(comments_count),
                     num_share  = mean(shares_count)) %>%
                   arrange(desc(num_likes))
-#install.packages("wordcloud")  安裝wordcloud 套件
-library(wordcloud)
-#install.packages("RColorBrewer") # color palettes
-library(RColorBrewer)
-#install.packages("tm") 
-library(tm)
-#install.packages("ggplot2")
-library(ggplot2)
-ggplot(totalpage_test,aes(x=type,y=likes_count))+geom_boxplot()+theme_bw()
-
+sort(table(cutter[totalPage$message]),decreasing = T)
 ```
-
 ## 期末專題分析規劃
 期末打算分析PeterSu 去年的FB貼文
 (他目前為天下雜誌駐站作家．Brand名牌誌專欄作家．Cheers駐站作家)
